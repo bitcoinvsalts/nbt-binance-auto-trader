@@ -1,5 +1,7 @@
 <h1 align="center">Node Binance Trader NBT</h1>
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/jsappme/nbt-binance-auto-trader)
+
 <h6 align="center">Version 0.2.4</h6>
 
 <h4 align="center">NBT is an open cryptocurrency trading bot development framework for the Binance exchange.</h4>
