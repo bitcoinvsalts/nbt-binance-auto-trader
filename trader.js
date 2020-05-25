@@ -34,14 +34,14 @@ const margin_pairs = ['ADABTC', 'ATOMBTC','BATBTC','BCHBTC','BNBBTC','DASHBTC','
 //////////////////////////////////////////////////////////////////////////////////
 
 const bnb_client = new Binance().options({
-    APIKEY: env.BINANCE_API_KEY,
-    APISECRET: env.BINANCE_API_SECRET
+    APIKEY: process.env.BINANCE_API_KEY,
+    APISECRET: process.env.BINANCE_API_SECRET
 })
 
 //////////////////////////////////////////////////////////////////////////////////
 
 const nbt_vers = "0.2.4"
-const socket = io('https://nbt-hub.herokuapp.com', { query: "v="+nbt_vers+"&type=client&key=" + env.BVA_API_KEY })
+const socket = io('https://nbt-hub.herokuapp.com', { query: "v="+nbt_vers+"&type=client&key=" + process.env.BVA_API_KEY })
 
 socket.on('connect', () => {
     console.log("Auto Trader connected.".grey)
@@ -69,7 +69,7 @@ socket.on('buy_signal', async (signal) => {
                 trading_qty[signal.pair+signal.stratid] = Number(user_payload[tresult].buy_amount)
                 ////
                 const traded_buy_signal = {
-                    key: env.BVA_API_KEY,
+                    key: process.env.BVA_API_KEY,
                     stratname: signal.stratname,
                     stratid: signal.stratid,
                     trading_type: user_payload[tresult].trading_type,
@@ -96,7 +96,7 @@ socket.on('buy_signal', async (signal) => {
                     trading_qty[signal.pair+signal.stratid] = Number(qty)
                     ////
                     const traded_buy_signal = {
-                        key: env.BVA_API_KEY,
+                        key: process.env.BVA_API_KEY,
                         stratname: signal.stratname,
                         stratid: signal.stratid,
                         trading_type: user_payload[tresult].trading_type,
@@ -137,7 +137,7 @@ socket.on('buy_signal', async (signal) => {
             if (signal.pair == 'BTCUSDT') {
                 /////
                 const traded_buy_signal = {
-                    key: env.BVA_API_KEY,
+                    key: process.env.BVA_API_KEY,
                     stratname: signal.stratname,
                     stratid: signal.stratid,
                     trading_type: user_payload[tresult].trading_type,
@@ -168,7 +168,7 @@ socket.on('buy_signal', async (signal) => {
                     console.log("QTY ====mgMarketBuy===> " + qty + " - " + alt + "BTC")
                     /////
                     const traded_buy_signal = {
-                        key: env.BVA_API_KEY,
+                        key: process.env.BVA_API_KEY,
                         stratname: signal.stratname,
                         stratid: signal.stratid,
                         trading_type: user_payload[tresult].trading_type,
@@ -224,7 +224,7 @@ socket.on('sell_signal', async (signal) => {
             if (signal.pair == 'BTCUSDT') {
                 trading_qty[signal.pair+signal.stratid] = Number(user_payload[tresult].buy_amount)
                 const traded_sell_signal = {
-                    key: env.BVA_API_KEY,
+                    key: process.env.BVA_API_KEY,
                     stratname: signal.stratname,
                     stratid: signal.stratid,
                     trading_type: user_payload[tresult].trading_type,
@@ -254,7 +254,7 @@ socket.on('sell_signal', async (signal) => {
                     trading_qty[signal.pair+signal.stratid] = Number(qty)
                     console.log("QTY ===mgBorrow===> " + qty + " - " + alt + "BTC")
                     const traded_sell_signal = {
-                        key: env.BVA_API_KEY,
+                        key: process.env.BVA_API_KEY,
                         stratname: signal.stratname,
                         stratid: signal.stratid,
                         trading_type: user_payload[tresult].trading_type,
@@ -290,7 +290,7 @@ socket.on('sell_signal', async (signal) => {
             console.log(signal.pair, ' ---> SELL', Number(trading_qty[signal.pair+signal.stratid]))
             if (signal.pair == 'BTCUSDT') {
                 const traded_sell_signal = {
-                    key: env.BVA_API_KEY,
+                    key: process.env.BVA_API_KEY,
                     stratname: signal.stratname,
                     stratid: signal.stratid,
                     trading_type: user_payload[tresult].trading_type,
@@ -310,7 +310,7 @@ socket.on('sell_signal', async (signal) => {
                     const qty = trading_qty[signal.pair+signal.stratid]
                     ///
                     const traded_sell_signal = {
-                        key: env.BVA_API_KEY,
+                        key: process.env.BVA_API_KEY,
                         stratname: signal.stratname,
                         stratid: signal.stratid,
                         trading_type: user_payload[tresult].trading_type,
@@ -366,7 +366,7 @@ socket.on('close_traded_signal', async (signal) => {
         if (trading_types[signal.pair+signal.stratid]==='LONG') {
             console.log(colors.grey('BUY_SIGNAL :: SELL TO EXIT LONG TRADE ::', signal.stratname, signal.stratid, signal.pair))
             const traded_sell_signal = {
-                key: env.BVA_API_KEY,
+                key: process.env.BVA_API_KEY,
                 stratname: signal.stratname,
                 stratid: signal.stratid,
                 trading_type: user_payload[tresult].trading_type,
@@ -420,7 +420,7 @@ socket.on('close_traded_signal', async (signal) => {
             console.log(colors.grey('CLOSE_SIGNAL :: BUY TO COVER SHORT TRADE ::', signal.stratname, signal.stratid, signal.pair))
             //////
             const traded_buy_signal = {
-                key: env.BVA_API_KEY,
+                key: process.env.BVA_API_KEY,
                 stratname: signal.stratname,
                 stratid: signal.stratid,
                 trading_type: user_payload[tresult].trading_type,
@@ -529,7 +529,7 @@ async function ExchangeInfo() {
 async function UpdateOpenTrades() {
     return new Promise((resolve, reject) => {
         // Retrieve previous open trades //
-        axios.get('https://bitcoinvsaltcoins.com/api/useropentradedsignals?key=' + env.BVA_API_KEY )
+        axios.get('https://bitcoinvsaltcoins.com/api/useropentradedsignals?key=' + process.env.BVA_API_KEY )
         .then( (response) => {
             response.data.rows.map( s => {
                 trading_pairs[s.pair+s.stratid] = true
